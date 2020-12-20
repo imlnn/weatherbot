@@ -39,9 +39,10 @@ async def get_forecast(message, state: FSMContext):
             for w in forecast:
                 i += 1
                 date = (datetime.now() + timedelta(days=i)).date()
+
                 await message.answer("Weather for " + str(date.day) + "." + str(date.month) + "." + str(date.year)
                                      + "\nPlace: " + message.text
-                                     + "\nTemperature: " + str("%.2f" % (w.temperature('celsius').get('day')))
+                                     + "\nTemperature: " + str("%.2f" % w.temp.get('day'))
                                      + "\n" + str(w.status)
                                      + "\nHumidity: " + str(w.humidity)
                                      + "\nWind speed: " + str(w.wind().get("speed")))

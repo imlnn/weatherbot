@@ -1,5 +1,3 @@
-from datetime import datetime, timedelta
-
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from pyowm import OWM
@@ -39,9 +37,9 @@ async def get_forecast(message, state: FSMContext):
 
             await message.answer("Weather for tomorrow"
                                  + "\nPlace: " + message.text
-                                 + "\nTemperature: " + str("%.2f" % (w.temperature('celsius').get('day')))
+                                 + "\nTemperature: " + str("%.2f" % w.temp.get('day'))
                                  + "\n" + str(w.status)
                                  + "\nHumidity: " + str(w.humidity)
                                  + "\nWind speed: " + str(w.wind().get("speed")))
         except:
-            message.answer("City not found")
+            await message.answer("City not found")
