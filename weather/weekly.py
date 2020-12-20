@@ -1,11 +1,10 @@
-from pyowm import OWM
-from pyowm.utils import timestamps
-
-from misc import dp
+from datetime import datetime, timedelta
 
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
+from pyowm import OWM
 
+from misc import dp
 from weather import keyboards
 
 
@@ -29,16 +28,22 @@ async def get_forecast(message, state: FSMContext):
 
     else:
         owm = OWM("a6b276fe520849040672b888ec1f1cb6")
-        #w = owm.weather_manager().weather_at_place(message.text).get_weather_at(timestamps.tomorrow())
-
         mgr = owm.weather_manager()
-        daily_forecaster = mgr.forecast_at_place('Berlin,DE', 'weekly')
-        tomorrow = timestamps.tomorrow()  # datetime object for tomorrow
-        w = daily_forecaster.get_weather_at(tomorrow)
+        try:
+            cw = owm.weather_manager().weather_at_place(message.text)
 
-        await message.answer("Weather for tomorrow"
-                             + "\nPlace: " + message.text
-                             + "\nTemperature: " + str(w.temperature('celsius').get("temp"))
-                             + "\n" + str(w.detailed_status)
-                             + "\nHumidity: " + str(w.humidity)
-                             + "\nWind speed: " + str(w.wind().get("speed")))
+            forecast = mgr.one_call(lat=cw.location.lat, lon=cw.location.lon, exclude='hourly', units='metric').forecast_daily
+
+            i = 0
+
+            for w in forecast:
+                i += 1
+                date = (datetime.now() + timedelta(days=i)).date()
+                await message.answer("Weather for " + str(date.day) + "." + str(date.month) + "." + str(date.year)
+                                     + "\nPlace: " + message.text
+                                     + "\nTemperature: " + str("%.2f" % (w.temperature('celsius').get('day')))
+                                     + "\n" + str(w.status)
+                                     + "\nHumidity: " + str(w.humidity)
+                                     + "\nWind speed: " + str(w.wind().get("speed")))
+        except:
+            message.answer("City not found")
