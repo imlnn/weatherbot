@@ -25,10 +25,14 @@ async def get_forecast(message, state: FSMContext):
         await message.answer("Ok",reply_markup=keyboards.start_keyboard())
         await state.finish()
         return
-    owm = OWM("a6b276fe520849040672b888ec1f1cb6")
-    w = owm.weather_manager().weather_at_place(message.text).weather
-    await message.answer("Place: " + message.text
-                   + "\nTemperature: " + str(w.temperature('celsius').get("temp"))
-                   + "\n" + str(w.detailed_status)
-                   + "\nHumidity: " + str(w.humidity)
-                   + "\nWind speed: " + str(w.wind().get("speed")))
+
+    try:
+        owm = OWM("a6b276fe520849040672b888ec1f1cb6")
+        w = owm.weather_manager().weather_at_place(message.text).weather
+        await message.answer("Place: " + message.text
+                       + "\nTemperature: " + str(w.temperature('celsius').get("temp"))
+                       + "\n" + str(w.detailed_status)
+                       + "\nHumidity: " + str(w.humidity)
+                       + "\nWind speed: " + str(w.wind().get("speed")))
+    except:
+        message.answer("City not found")
