@@ -24,13 +24,12 @@ async def get_forecast(message, state: FSMContext):
         await state.finish()
         return
 
-    else:
-        try:
-            city_name = message.text
-            gc = get_city_geocode(city_name)
-            weather = get_weekly_weather(city_name, gc)
+    try:
+        city_name = message.text
+        gc = get_city_geocode(city_name)
+        weather = get_weekly_weather(city_name, gc)
 
-            for w in weather:
-                await message.answer(w.to_string())
-        except:
-            await message.answer("City not found")
+        for w in weather:
+            await message.answer(w.to_string())
+    except:
+        await message.answer("City not found")

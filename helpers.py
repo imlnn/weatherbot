@@ -18,8 +18,8 @@ def get_current_weather(city_name):
 
 
 def get_city_geocode(city_name):
-    weather = OWM_OBJ.weather_manager().weather_at_place(city_name).weather
-    return {'lat': weather.location.lat, 'lon': weather.location.lon}
+    location = OWM_OBJ.weather_manager().weather_at_place(city_name).location
+    return {'lat': location.lat, 'lon': location.lon}
 
 
 def get_weekly_weather(city_name, geocode):
@@ -35,6 +35,8 @@ def get_weekly_weather(city_name, geocode):
                                                  , f.humidity
                                                  , f.wind().get("speed")))
         lamb += 1
+
+    return weather_array
 
 
 def get_weather_for_tomorrow(city_name, geocode):

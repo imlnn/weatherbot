@@ -23,11 +23,11 @@ async def get_forecast(message, state: FSMContext):
         await message.answer("Ok", reply_markup=keyboards.start_keyboard())
         await state.finish()
         return
-    else:
-        try:
-            city_name = message.text
-            gc = get_city_geocode(city_name)
-            w = get_weather_for_tomorrow(city_name, gc)
-            await message.answer(w.to_string())
-        except:
-            await message.answer("City not found")
+
+    try:
+        city_name = message.text
+        gc = get_city_geocode(city_name)
+        w = get_weather_for_tomorrow(city_name, gc)
+        await message.answer(w.to_string())
+    except:
+        await message.answer("City not found")

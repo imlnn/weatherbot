@@ -6,8 +6,10 @@ class Weather:
         self.date = date
         self.place = place
         self.temperature = temperature
-        if temperature < -150:
+        if temperature < -100:
             self.temperature -= ABSOLUTE_ZERO
+        elif temperature > 100:
+            self.temperature += ABSOLUTE_ZERO
         self.status = status
         self.humidity = humidity
         self.wind_speed = wind_speed
