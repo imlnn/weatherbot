@@ -1,10 +1,8 @@
-from pyowm import OWM
-from helpers import get_current_weather, create_weather_desc
-from misc import dp
-
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
+from helpers import get_current_weather
+from misc import dp
 from weather import keyboards
 
 
@@ -29,6 +27,6 @@ async def get_forecast(message, state: FSMContext):
     try:
         city_name = message.text
         w = get_current_weather(city_name)
-        await message.answer(create_weather_desc(city_name, w))
+        await message.answer(w.to_string())
     except:
         await message.answer("City not found")

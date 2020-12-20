@@ -1,9 +1,7 @@
-from datetime import datetime, timedelta
-
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from pyowm import OWM
 
+from helpers import get_city_geocode, get_weekly_weather
 from misc import dp
 from weather import keyboards
 
@@ -27,24 +25,12 @@ async def get_forecast(message, state: FSMContext):
         return
 
     else:
-        owm = OWM("a6b276fe520849040672b888ec1f1cb6")
-        mgr = owm.weather_manager()
         try:
-            cw = owm.weather_manager().weather_at_place(message.text)
+            city_name = message.text
+            gc = get_city_geocode(city_name)
+            weather = get_weekly_weather(city_name, gc)
 
-            forecast = mgr.one_call(lat=cw.location.lat, lon=cw.location.lon, exclude='hourly', units='metric').forecast_daily
-
-            i = 0
-
-            for w in forecast:
-                i += 1
-                date = (datetime.now() + timedelta(days=i)).date()
-
-                await message.answer("Weather for " + str(date.day) + "." + str(date.month) + "." + str(date.year)
-                                     + "\nPlace: " + message.text
-                                     + "\nTemperature: " + str("%.2f" % w.temp.get('day'))
-                                     + "\n" + str(w.status)
-                                     + "\nHumidity: " + str(w.humidity)
-                                     + "\nWind speed: " + str(w.wind().get("speed")))
+            for w in weather:
+                await message.answer(w.to_string())
         except:
-            message.answer("City not found")
+            await message.answer("City not found")
