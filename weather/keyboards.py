@@ -2,12 +2,13 @@ from aiogram import types
 
 
 def start_keyboard():
-    start_keyboard = types.ReplyKeyboardMarkup(row_width=1)
+    start_buttons = types.ReplyKeyboardMarkup(row_width=1)
     btn1 = types.KeyboardButton("Now")
     btn2 = types.KeyboardButton("Tomorrow")
     btn3 = types.KeyboardButton("Weekly")
 
-    return start_keyboard.add(btn1, btn2, btn3)
+    return start_buttons.add(btn1, btn2, btn3)
+
 
 def default_cities():
     dcs = types.ReplyKeyboardMarkup(row_width=3)

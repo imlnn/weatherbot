@@ -1,5 +1,5 @@
 from pyowm import OWM
-
+from helpers import get_current_weather, create_weather_desc
 from misc import dp
 
 from aiogram.dispatcher import FSMContext
@@ -27,15 +27,8 @@ async def get_forecast(message, state: FSMContext):
         return
 
     try:
-        owm = OWM("a6b276fe520849040672b888ec1f1cb6")
-
-        w = owm.weather_manager().weather_at_place(message.text).weather
-
-        await message.answer("Place: " + message.text
-                                 + "\nTemperature: " + str("%.2f" % (w.temp['temp'] - 273.15))
-                                 + "\n" + str(w.status)
-                                 + "\nHumidity: " + str(w.humidity)
-                                 + "\nWind speed: " + str(w.wind().get("speed")))
-
+        city_name = message.text
+        w = get_current_weather(city_name)
+        await message.answer(create_weather_desc(city_name, w))
     except:
         await message.answer("City not found")
