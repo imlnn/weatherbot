@@ -8,7 +8,7 @@ from misc import dp
 from weather import keyboards
 
 
-class WeeklyStates(StatesGroup):
+class TomorrowStates(StatesGroup):
     start = State()
 
 
@@ -16,10 +16,10 @@ class WeeklyStates(StatesGroup):
 async def get_city(message):
     await message.answer("Send your City name, choose City from defaults or tap Back to return to main menu"
                          , reply_markup=keyboards.default_cities())
-    await WeeklyStates.start.set()
+    await TomorrowStates.start.set()
 
 
-@dp.message_handler(state=WeeklyStates.start)
+@dp.message_handler(state=TomorrowStates.start)
 async def get_forecast(message, state: FSMContext):
     if message.text == "Back":
         await message.answer("Ok", reply_markup=keyboards.start_keyboard())
