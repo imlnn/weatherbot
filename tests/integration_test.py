@@ -5,7 +5,6 @@ from tgintegration import Response
 
 client = Client(
     "my_account",
-    api_id=2409726,
     config_file="../config.ini"
 )
 

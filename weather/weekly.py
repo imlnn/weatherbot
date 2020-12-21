@@ -12,8 +12,8 @@ class WeeklyStates(StatesGroup):
 
 @dp.message_handler(text_contains=['Weekly'])
 async def get_city(message):
-    await message.answer("Send your City name, choose City from defaults or tap Back to return to main menu"
-                         , reply_markup=keyboards.default_cities())
+    await message.answer("Send your City name, choose City from defaults or tap Back to return to main menu",
+                         reply_markup=keyboards.default_cities())
     await WeeklyStates.start.set()
 
 

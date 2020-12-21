@@ -12,8 +12,8 @@ class TomorrowStates(StatesGroup):
 
 @dp.message_handler(text_contains=['Tomorrow'])
 async def get_city(message):
-    await message.answer("Send your City name, choose city from defaults or tap Back to return to main menu"
-                         , reply_markup=keyboards.default_cities())
+    await message.answer("Send your City name, choose city from defaults or tap Back to return to main menu",
+                         reply_markup=keyboards.default_cities())
     await TomorrowStates.start.set()
 
 
