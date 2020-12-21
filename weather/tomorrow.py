@@ -19,13 +19,13 @@ async def get_city(message):
 
 @dp.message_handler(state=TomorrowStates.start)
 async def get_forecast(message, state: FSMContext):
-    if message.text == "Back":
+    if message.text == "Back" or message.text == "/Back":
         await message.answer("Ok", reply_markup=keyboards.start_keyboard())
         await state.finish()
         return
 
     try:
-        city_name = message.text
+        city_name = message.text.lstrip("/")
         gc = get_city_geocode(city_name)
         w = get_weather_for_tomorrow(city_name, gc)
         await message.answer(w.to_string())

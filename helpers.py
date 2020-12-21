@@ -42,7 +42,7 @@ def get_weekly_weather(city_name, geocode):
 def get_weather_for_tomorrow(city_name, geocode):
     forecast = OWM_OBJ.weather_manager().one_call(lat=geocode['lat'], lon=geocode['lon'], exclude='hourly',
                                                   units='metric').forecast_daily
-    return weather_obj.Weather(get_date_string()
+    return weather_obj.Weather(get_date_string(1)
                                , city_name
                                , forecast[1].temp.get('day')
                                , forecast[1].status
